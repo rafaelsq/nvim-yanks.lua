@@ -1,10 +1,11 @@
 # nvim-yanks.lua
-`yanks` is a clipboard manager for neovim.  
-It records everything that get yanked in your vim session.
+`nvim-yanks` is a clipboard manager neovim plugin with [fzf.vim](https://github.com/junegunn/fzf) integration.
+It records everything that get yanked in your vim session so that you can recover it easy.
 
 ## Setup
 
 ```
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'rafaelsq/nvim-yanks.lua'
 ...
 
