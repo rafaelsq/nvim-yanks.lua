@@ -3,7 +3,7 @@ local M = {}
 local store = {}
 
 M.store = function()
-  table.insert(store, 1, table.concat(vim.v.event.regcontents, "\n"))
+  table.insert(store, 1, vim.v.event)
 end
 
 local function setup()
@@ -16,13 +16,17 @@ local function setup()
 end
 
 M.Show = function()
+  local source = {}
+  for i, o in pairs(store) do
+    table.insert(source, i .. '\t' .. table.concat(o.regcontents, "\n"))
+  end
+
   local w = vim.fn["fzf#wrap"]('Yanks', {
-    source = store,
-    sink = "",
+    source = source,
   })
-  w["sink*"] = nil
-  w.sink = function(line)
-    vim.fn.setreg(vim.v.register, line, 'v')
+  w["sink*"] = function(line)
+    local o = store[tonumber(string.gmatch(line[2], '%d+')())]
+    vim.fn.setreg(vim.v.register, table.concat(o.regcontents, "\n"), o.regtype)
   end
   vim.fn["fzf#run"](w)
 end
